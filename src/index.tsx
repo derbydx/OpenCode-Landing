@@ -22,6 +22,7 @@ app.get(
               <p class="text-gray-400 mt-1">Cotuí, Dominican Republic</p>
             </section>
 
+            <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
               <h2 class="text-2xl font-semibold text-white mb-4">About</h2>
               <p class="text-gray-300 leading-relaxed">
@@ -34,6 +35,7 @@ app.get(
               </p>
             </section>
 
+            <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
               <h2 class="text-2xl font-semibold text-white mb-4">Skills</h2>
               <div class="flex flex-wrap gap-3">
@@ -47,6 +49,7 @@ app.get(
               </div>
             </section>
 
+            <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
               <h2 class="text-2xl font-semibold text-white mb-6">Projects</h2>
 
@@ -87,6 +90,7 @@ app.get(
               </div>
             </section>
 
+            <div class="border-t border-gray-800/50 mb-10"></div>
             <section>
               <h2 class="text-2xl font-semibold text-white mb-4">Connect</h2>
               <div class="flex gap-4">
