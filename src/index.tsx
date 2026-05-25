@@ -43,6 +43,46 @@ app.get(
               </div>
             </section>
 
+            <section class="mb-16">
+              <h2 class="text-2xl font-semibold text-white mb-6">Projects</h2>
+
+              <div class="mb-8">
+                <h3 class="text-lg font-semibold text-teal-300 mb-1">Automated Expense Tracker</h3>
+                <p class="text-gray-300 leading-relaxed mb-3">
+                  Sistema automatizado para el procesamiento y categorización de recibos financieros
+                  mediante flujos de trabajo inteligentes, almacenamiento estructurado y análisis de
+                  datos en tiempo real.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {['n8n', 'AI', 'Airtable', 'Automation'].map(
+                    (tag) => (
+                      <span class="px-3 py-1 bg-indigo-900/40 text-indigo-300 rounded-full text-xs font-medium border border-indigo-800/50">
+                        {tag}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-semibold text-teal-300 mb-1">Personal Media Server Infrastructure</h3>
+                <p class="text-gray-300 leading-relaxed mb-3">
+                  Despliegue y optimización de un servidor de medios centralizado y gestión de
+                  almacenamiento fotográfico auto-alojado, priorizando la privacidad y el rendimiento
+                  local.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  {['Docker', 'Linux', 'Self-Hosting', 'Databases'].map(
+                    (tag) => (
+                      <span class="px-3 py-1 bg-indigo-900/40 text-indigo-300 rounded-full text-xs font-medium border border-indigo-800/50">
+                        {tag}
+                      </span>
+                    )
+                  )}
+                </div>
+              </div>
+            </section>
+
             <section>
               <h2 class="text-2xl font-semibold text-white mb-4">Connect</h2>
               <div class="flex gap-4">
