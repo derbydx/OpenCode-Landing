@@ -77,7 +77,7 @@ async function loadContent(env: Bindings): Promise<Content> {
 
 const ICON_NAMES = ['server', 'zap', 'database', 'shield', 'book', 'wrench']
 
-function esc(s: string) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') }
+function esc(s: string | undefined | null): string { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') }
 
 function htmlPage(content: Content, lang: Lang): string {
   const lc = lang === 'en' ? content.en : content.es
