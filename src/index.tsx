@@ -41,7 +41,7 @@ app.get(
               <div class="flex flex-wrap gap-3">
                 {['Docker', 'PowerShell', 'C#', 'Python', 'Web Development'].map(
                   (skill) => (
-                    <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-900/60">
+                    <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-800/60 hover:border-teal-600/60">
                       {skill}
                     </span>
                   )
@@ -53,7 +53,7 @@ app.get(
             <section class="mb-16">
               <h2 class="text-2xl font-semibold text-white mb-6">Projects</h2>
 
-              <div class="mb-8">
+              <div class="p-5 rounded-xl border border-gray-800/50 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-900/10 hover:border-teal-900/30 bg-gray-900/30">
                 <h3 class="text-lg font-semibold text-teal-300 mb-1">Automated Expense Tracker</h3>
                 <p class="text-gray-300 leading-relaxed mb-3">
                   Automated system for processing and categorizing financial receipts
@@ -63,7 +63,7 @@ app.get(
                 <div class="flex flex-wrap gap-3">
                   {['n8n', 'AI', 'Airtable', 'Automation'].map(
                     (tag) => (
-                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-900/60">
+                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-800/60 hover:border-teal-600/60">
                         {tag}
                       </span>
                     )
@@ -71,7 +71,7 @@ app.get(
                 </div>
               </div>
 
-              <div>
+              <div class="p-5 rounded-xl border border-gray-800/50 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-900/10 hover:border-teal-900/30 bg-gray-900/30">
                 <h3 class="text-lg font-semibold text-teal-300 mb-1">Personal Media Server Infrastructure</h3>
                 <p class="text-gray-300 leading-relaxed mb-3">
                   Deployment and optimization of a centralized media server and self-hosted
@@ -80,7 +80,7 @@ app.get(
                 <div class="flex flex-wrap gap-3">
                   {['Docker', 'Linux', 'Self-Hosting', 'Databases'].map(
                     (tag) => (
-                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-900/60">
+                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-800/60 hover:border-teal-600/60">
                         {tag}
                       </span>
                     )
