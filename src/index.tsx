@@ -60,10 +60,10 @@ app.get(
                   using intelligent workflows, structured storage, and real-time data
                   analysis.
                 </p>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-3">
                   {['n8n', 'AI', 'Airtable', 'Automation'].map(
                     (tag) => (
-                      <span class="px-3 py-1 bg-indigo-900/40 text-indigo-300 rounded-full text-xs font-medium border border-indigo-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-indigo-900/20 hover:bg-indigo-900/60">
+                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-900/60">
                         {tag}
                       </span>
                     )
@@ -77,10 +77,10 @@ app.get(
                   Deployment and optimization of a centralized media server and self-hosted
                   photo storage management, prioritizing privacy and local performance.
                 </p>
-                <div class="flex flex-wrap gap-2">
+                <div class="flex flex-wrap gap-3">
                   {['Docker', 'Linux', 'Self-Hosting', 'Databases'].map(
                     (tag) => (
-                      <span class="px-3 py-1 bg-indigo-900/40 text-indigo-300 rounded-full text-xs font-medium border border-indigo-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-indigo-900/20 hover:bg-indigo-900/60">
+                      <span class="px-4 py-2 bg-teal-900/40 text-teal-300 rounded-full text-sm font-medium border border-teal-800/50 transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-teal-900/20 hover:bg-teal-900/60">
                         {tag}
                       </span>
                     )
