@@ -14,17 +14,23 @@ app.get(
           <title>Derby | IT Professional & Educator</title>
           <script src="https://cdn.tailwindcss.com"></script>
         </head>
-        <body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col">
-          <main class="flex-1 max-w-3xl mx-auto px-6 py-16 w-full">
+        <body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col relative">
+          <div class="fixed inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px); background-size: 40px 40px;"></div>
+          <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none bg-gradient-radial from-teal-900/10 to-transparent rounded-full blur-[80px]"></div>
+          <main class="flex-1 max-w-3xl mx-auto px-6 py-16 w-full relative">
             <section class="mb-16">
-              <h1 class="text-5xl font-bold tracking-tight text-white mb-3">Derby</h1>
+              <div class="relative inline-block">
+                <div class="absolute -inset-16 bg-teal-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+                <h1 class="relative text-5xl font-bold tracking-tight text-white mb-3">Derby</h1>
+              </div>
               <p class="text-xl text-teal-400 font-medium">IT Professional & Educator</p>
               <p class="text-gray-400 mt-1">Cotuí, Dominican Republic</p>
             </section>
 
             <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
-              <h2 class="text-2xl font-semibold text-white mb-4">About</h2>
+              <h2 class="text-2xl font-semibold text-white mb-2">About</h2>
+              <span class="block w-12 h-0.5 bg-gradient-to-r from-teal-500 to-teal-700 rounded-full mb-4"></span>
               <p class="text-gray-300 leading-relaxed">
                 IT professional with a decade of experience in system administration,
                 cybersecurity, and support environments. I work extensively with Docker,
@@ -37,7 +43,8 @@ app.get(
 
             <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
-              <h2 class="text-2xl font-semibold text-white mb-4">Skills</h2>
+              <h2 class="text-2xl font-semibold text-white mb-2">Skills</h2>
+              <span class="block w-12 h-0.5 bg-gradient-to-r from-teal-500 to-teal-700 rounded-full mb-4"></span>
               <div class="flex flex-wrap gap-3">
                 {['Docker', 'PowerShell', 'C#', 'Python', 'Web Development'].map(
                   (skill) => (
@@ -51,7 +58,8 @@ app.get(
 
             <div class="border-t border-gray-800/50 mb-10"></div>
             <section class="mb-16">
-              <h2 class="text-2xl font-semibold text-white mb-6">Projects</h2>
+              <h2 class="text-2xl font-semibold text-white mb-2">Projects</h2>
+              <span class="block w-12 h-0.5 bg-gradient-to-r from-teal-500 to-teal-700 rounded-full mb-6"></span>
 
               <div class="p-5 rounded-xl border border-gray-800/50 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-900/10 hover:border-teal-900/30 bg-gray-900/30">
                 <h3 class="text-lg font-semibold text-teal-300 mb-1">Automated Expense Tracker</h3>
@@ -91,7 +99,8 @@ app.get(
 
             <div class="border-t border-gray-800/50 mb-10"></div>
             <section>
-              <h2 class="text-2xl font-semibold text-white mb-4">Connect</h2>
+              <h2 class="text-2xl font-semibold text-white mb-2">Connect</h2>
+              <span class="block w-12 h-0.5 bg-gradient-to-r from-teal-500 to-teal-700 rounded-full mb-4"></span>
               <div class="flex gap-4">
                 <a
                   href="https://github.com/derbydx"
