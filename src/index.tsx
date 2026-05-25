@@ -25,8 +25,12 @@ app.get(
             <section class="mb-16">
               <h2 class="text-2xl font-semibold text-white mb-4">About</h2>
               <p class="text-gray-300 leading-relaxed">
-                IT pro from Cotuí, working with Docker, PowerShell, C#, and Python.
-                Currently expanding into web development with HTML and CSS.
+                IT professional with a decade of experience in system administration,
+                cybersecurity, and support environments. I work extensively with Docker,
+                PowerShell, C#, and Python, and I am currently expanding my skill set into
+                web development with HTML and CSS. Beyond technical implementations, I serve
+                as a professional educator and facilitator, passionate about knowledge sharing
+                and bridging the gap between complex technologies and practical learning.
               </p>
             </section>
 
