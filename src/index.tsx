@@ -4,6 +4,7 @@ type Lang = 'en' | 'es'
 type Bindings = { SITE_CONTENT: KVNamespace; ADMIN_PASSWORD: string }
 
 interface Content {
+  name: string
   profileImage: string
   en: LangContent
   es: LangContent
@@ -19,6 +20,7 @@ interface LangContent {
 }
 
 const DEFAULT_CONTENT: Content = {
+  name: 'Derby',
   profileImage: '',
   en: {
     hero: { tagline: 'Custom IT Architect & Empowering Technical Educator', subtitle: 'Architecting Reliable Systems & Tech Leadership.' },
@@ -98,7 +100,7 @@ function htmlPage(content: Content, lang: Lang): string {
 
 <section class="flex flex-col md:flex-row items-center gap-10 mb-24">
 <div class="flex-1 text-center md:text-left">
-<h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-2">Derby</h1>
+<h1 class="text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-2">${esc(content.name || 'Derby')}</h1>
 <p class="text-xl md:text-2xl font-semibold bg-gradient-to-r from-teal-400 to-purple-400 bg-clip-text text-transparent leading-tight">${esc(lc.hero.tagline)}</p>
 <p class="text-base md:text-lg text-gray-400 mt-2 leading-relaxed max-w-xl">${esc(lc.hero.subtitle)}</p>
 <div class="flex flex-wrap gap-4 mt-6 justify-center md:justify-start">
@@ -244,6 +246,7 @@ ${saved ? `<span class="text-teal-400 text-sm">Saved</span>` : ''}
 </div></div>
 
 <div class="flex flex-wrap gap-4 mb-6 items-end">
+<div><label class="block text-xs text-gray-500 mb-1">Name</label><input type="text" name="name" value="${esc(content.name)}" class="w-60 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm focus:outline-none focus:border-teal-500" /></div>
 <div><label class="block text-xs text-gray-500 mb-1">Profile Image URL</label><input type="text" name="profileImage" value="${esc(content.profileImage)}" class="w-80 bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm focus:outline-none focus:border-teal-500" oninput="document.getElementById('profile-preview').src=this.value||''"/></div>
 ${content.profileImage ? `<img id="profile-preview" src="${esc(content.profileImage)}" class="w-12 h-12 rounded-full object-cover border border-gray-700" />` : '<img id="profile-preview" class="w-12 h-12 rounded-full object-cover border border-gray-700" style="display:none"/>'}
 </div>
@@ -273,7 +276,7 @@ function projHTML(lang,i){var t='<div class="item-card p-4 rounded-xl bg-gray-90
 function addProject(lang){var c=document.getElementById('projects-'+lang);var i=nextIdx('proj-image');c.insertAdjacentHTML('beforeend',projHTML(lang,i))}
 function eduHTML(lang,i){return '<div class="item-card p-4 rounded-xl bg-gray-900/40 border border-gray-800/60"><div class="grid grid-cols-3 gap-3 mb-3"><div><label class="block text-xs text-gray-500 mb-1">Degree ('+lang+')</label><input name="edu-degree-'+lang+'-'+i+'" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm focus:outline-none focus:border-teal-500" /></div><div><label class="block text-xs text-gray-500 mb-1">Institution ('+lang+')</label><input name="edu-institution-'+lang+'-'+i+'" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm focus:outline-none focus:border-teal-500" /></div><div><label class="block text-xs text-gray-500 mb-1">Year ('+lang+')</label><input name="edu-year-'+lang+'-'+i+'" class="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-gray-200 text-sm focus:outline-none focus:border-teal-500" /></div></div><button type="button" onclick="this.parentElement.remove()" class="text-xs text-red-400 hover:text-red-300">Remove</button></div>'}
 function addEdu(lang){var c=document.getElementById('edu-'+lang);var i=nextIdx('edu-degree-'+lang);c.insertAdjacentHTML('beforeend',eduHTML(lang,i))}
-function saveContent(){var langs=['en','es'];var data={profileImage:document.querySelector('[name="profileImage"]').value||'',en:{hero:{tagline:'',subtitle:''},about:'',skills:[],services:[],projects:[],education:[],connect:{email:''}},es:{hero:{tagline:'',subtitle:''},about:'',skills:[],services:[],projects:[],education:[],connect:{email:''}}}
+function saveContent(){var langs=['en','es'];var data={name:document.querySelector('[name="name"]').value||'Derby',profileImage:document.querySelector('[name="profileImage"]').value||'',en:{hero:{tagline:'',subtitle:''},about:'',skills:[],services:[],projects:[],education:[],connect:{email:''}},es:{hero:{tagline:'',subtitle:''},about:'',skills:[],services:[],projects:[],education:[],connect:{email:''}}}
 langs.forEach(function(lang){var lc=data[lang]
 lc.hero.tagline=document.querySelector('[name="hero-tagline-'+lang+'"]')?.value||''
 lc.hero.subtitle=document.querySelector('[name="hero-subtitle-'+lang+'"]')?.value||''
