@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { z } from 'zod'
 
 type Lang = 'en' | 'es'
 type Bindings = { SITE_CONTENT: KVNamespace; ADMIN_PASSWORD: string; ADMIN_SECRET: string }
@@ -18,6 +19,44 @@ interface LangContent {
   education: { degree: string; institution: string; year: string }[]
   connect: { email: string }
 }
+
+const serviceItemSchema = z.object({
+  title: z.string().max(500),
+  desc: z.string().max(2000),
+  icon: z.enum(['server', 'zap', 'database', 'shield', 'book', 'wrench']),
+  image: z.string().max(5000),
+})
+
+const projectItemSchema = z.object({
+  title: z.string().max(500),
+  type: z.string().max(200),
+  desc: z.string().max(5000),
+  tags: z.array(z.string().max(100)).max(50),
+  image: z.string().max(5000),
+})
+
+const eduItemSchema = z.object({
+  degree: z.string().max(500),
+  institution: z.string().max(500),
+  year: z.string().max(100),
+})
+
+const langContentSchema = z.object({
+  hero: z.object({ tagline: z.string().max(500), subtitle: z.string().max(500) }),
+  about: z.string().max(10000),
+  skills: z.array(z.string().max(200)).max(100),
+  services: z.array(serviceItemSchema).max(50),
+  projects: z.array(projectItemSchema).max(50),
+  education: z.array(eduItemSchema).max(50),
+  connect: z.object({ email: z.string().max(200) }),
+})
+
+const contentSchema = z.object({
+  name: z.string().max(200).default('Derby'),
+  profileImage: z.string().max(5000).default(''),
+  en: langContentSchema,
+  es: langContentSchema,
+})
 
 const DEFAULT_CONTENT: Content = {
   name: 'Derby',
@@ -434,8 +473,12 @@ app.get('/api/content', async (c) => {
 
 app.post('/api/content', async (c) => {
   if (!await isAuthed(c, c.env.ADMIN_SECRET)) return c.json({ error: 'unauthorized' }, 401)
-  const body = await c.req.json<Content>()
-  await c.env.SITE_CONTENT.put('content', JSON.stringify(body))
+  const body = await c.req.json()
+  const parsed = contentSchema.safeParse(body)
+  if (!parsed.success) {
+    return c.json({ error: 'validation failed', details: parsed.error.flatten() }, 400)
+  }
+  await c.env.SITE_CONTENT.put('content', JSON.stringify(parsed.data))
   return c.json({ ok: true })
 })
 
@@ -446,7 +489,8 @@ app.post('/api/sync-defaults', async (c) => {
 })
 
 app.get('/', async (c) => {
-  const lang = (c.req.query('lang') || 'en') as Lang
+  const raw = c.req.query('lang')
+  const lang = (raw === 'es' ? 'es' : 'en') as Lang
   const content = await loadContent(c.env)
   return c.html(htmlPage(content, lang))
 })
