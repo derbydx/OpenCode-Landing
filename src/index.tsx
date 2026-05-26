@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 
 type Lang = 'en' | 'es'
-type Bindings = { SITE_CONTENT: KVNamespace; ADMIN_PASSWORD: string }
+type Bindings = { SITE_CONTENT: KVNamespace; ADMIN_PASSWORD: string; ADMIN_SECRET: string }
 
 interface Content {
   name: string
@@ -360,13 +360,44 @@ ${error ? `<p class="text-red-400 text-sm text-center mb-4">${esc(error)}</p>` :
 
 const app = new Hono<{ Bindings: Bindings }>()
 
-function isAuthed(c: any): boolean {
+function base64url(data: string): string {
+  return btoa(data).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
+}
+
+async function signJWT(secret: string): Promise<string> {
+  const header = base64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
+  const payload = base64url(JSON.stringify({ exp: Math.floor(Date.now() / 1000) + 86400, iat: Math.floor(Date.now() / 1000) }))
+  const encoder = new TextEncoder()
+  const key = await crypto.subtle.importKey('raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign'])
+  const sigBytes = new Uint8Array(await crypto.subtle.sign('HMAC', key, encoder.encode(header + '.' + payload)))
+  const sig = base64url(String.fromCharCode(...sigBytes))
+  return header + '.' + payload + '.' + sig
+}
+
+async function verifyJWT(token: string, secret: string): Promise<boolean> {
+  const parts = token.split('.')
+  if (parts.length !== 3) return false
+  const [header, payload, sig] = parts
+  try {
+    const encoder = new TextEncoder()
+    const key = await crypto.subtle.importKey('raw', encoder.encode(secret), { name: 'HMAC', hash: 'SHA-256' }, false, ['verify'])
+    const sigBytes = Uint8Array.from(atob(sig.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))
+    const valid = await crypto.subtle.verify('HMAC', key, sigBytes, encoder.encode(header + '.' + payload))
+    if (!valid) return false
+    const data = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')))
+    return (data.exp || 0) > Math.floor(Date.now() / 1000)
+  } catch { return false }
+}
+
+function isAuthed(c: any, secret: string): Promise<boolean> {
   const cookie = c.req.header('cookie') || ''
-  return cookie.includes('admin_auth=yes')
+  const match = cookie.match(/admin_token=([^;]+)/)
+  if (!match) return Promise.resolve(false)
+  return verifyJWT(match[1], secret)
 }
 
 app.get('/admin', async (c) => {
-  if (isAuthed(c)) {
+  if (await isAuthed(c, c.env.ADMIN_SECRET)) {
     const content = await loadContent(c.env)
     return c.html(AdminDashboardHTML(content))
   }
@@ -377,38 +408,39 @@ app.post('/admin', async (c) => {
   const fd = await c.req.formData()
   const pw = fd.get('password') as string
   if (pw === c.env.ADMIN_PASSWORD) {
-    c.header('Set-Cookie', 'admin_auth=yes; HttpOnly; Path=/; Max-Age=86400; SameSite=Lax')
+    const token = await signJWT(c.env.ADMIN_SECRET)
+    c.header('Set-Cookie', `admin_token=${token}; HttpOnly; Secure; Path=/; Max-Age=86400; SameSite=Lax`)
     return c.redirect('/admin/dashboard')
   }
   return c.html(LoginPageHTML('Invalid password'))
 })
 
 app.get('/admin/dashboard', async (c) => {
-  if (!isAuthed(c)) return c.redirect('/admin')
+  if (!await isAuthed(c, c.env.ADMIN_SECRET)) return c.redirect('/admin')
   const content = await loadContent(c.env)
   const saved = c.req.query('saved') === '1'
   return c.html(AdminDashboardHTML(content, saved))
 })
 
 app.post('/admin/logout', async (c) => {
-  c.header('Set-Cookie', 'admin_auth=; HttpOnly; Path=/; Max-Age=0')
+  c.header('Set-Cookie', 'admin_token=; HttpOnly; Secure; Path=/; Max-Age=0')
   return c.redirect('/admin')
 })
 
 app.get('/api/content', async (c) => {
-  if (!isAuthed(c)) return c.json({ error: 'unauthorized' }, 401)
+  if (!await isAuthed(c, c.env.ADMIN_SECRET)) return c.json({ error: 'unauthorized' }, 401)
   return c.json(await loadContent(c.env))
 })
 
 app.post('/api/content', async (c) => {
-  if (!isAuthed(c)) return c.json({ error: 'unauthorized' }, 401)
+  if (!await isAuthed(c, c.env.ADMIN_SECRET)) return c.json({ error: 'unauthorized' }, 401)
   const body = await c.req.json<Content>()
   await c.env.SITE_CONTENT.put('content', JSON.stringify(body))
   return c.json({ ok: true })
 })
 
 app.post('/api/sync-defaults', async (c) => {
-  if (!isAuthed(c)) return c.json({ error: 'unauthorized' }, 401)
+  if (!await isAuthed(c, c.env.ADMIN_SECRET)) return c.json({ error: 'unauthorized' }, 401)
   await c.env.SITE_CONTENT.put('content', JSON.stringify(DEFAULT_CONTENT))
   return c.json({ ok: true, message: 'Defaults restored' })
 })
